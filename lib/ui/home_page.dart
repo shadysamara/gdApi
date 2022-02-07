@@ -1,6 +1,9 @@
+import 'dart:developer';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:gd_api/data/dio_client.dart';
+import 'package:gd_api/data/sp_helper.dart';
 import 'package:gd_api/models/get_all_products_response.dart';
 import 'package:gd_api/providers/api_provider.dart';
 import 'package:provider/provider.dart';
@@ -13,10 +16,24 @@ class ApiScreen extends StatelessWidget {
       backgroundColor: Colors.grey[300],
       appBar: AppBar(
         title: Text('Ecommerce App'),
+        actions: [
+          IconButton(
+              onPressed: () {
+                Provider.of<ApiProvider>(context, listen: false)
+                    .logOut(context);
+              },
+              icon: Icon(Icons.logout))
+        ],
       ),
       body: Consumer<ApiProvider>(builder: (context, provider, x) {
         return Column(
           children: [
+            RaisedButton(
+              onPressed: () async {
+                log(await Provider.of<SpHelper>(context, listen: false)
+                    .getToken());
+              },
+            ),
             provider.cats == null
                 ? Center(
                     child: CircularProgressIndicator(),

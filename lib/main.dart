@@ -1,15 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:gd_api/data/dio_client.dart';
+import 'package:gd_api/data/sp_helper.dart';
 import 'package:gd_api/providers/api_provider.dart';
 import 'package:gd_api/ui/home_page.dart';
+import 'package:gd_api/ui/splach.dart';
 import 'package:provider/provider.dart';
 
 void main() {
-  runApp(ChangeNotifierProvider<ApiProvider>(
-    create: (context) {
-      return ApiProvider();
-    },
-    child: MaterialApp(home: ApiScreen()),
+  runApp(MultiProvider(
+    providers: [
+      ChangeNotifierProvider<ApiProvider>(
+        create: (context) {
+          return ApiProvider();
+        },
+      ),
+      Provider<SpHelper>(
+        create: (context) => SpHelper(),
+      )
+    ],
+    child: MaterialApp(home: SplachScreen()),
   ));
 }
 
