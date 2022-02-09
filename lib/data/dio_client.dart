@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:gd_api/data/api_constants.dart';
 import 'package:gd_api/data/sp_helper.dart';
+import 'package:gd_api/models/get_all_passengers_response.dart';
 import 'package:gd_api/models/get_all_products_response.dart';
 import 'package:gd_api/models/register_request.dart';
 import 'package:gd_api/models/register_response.dart';
@@ -82,5 +83,20 @@ class DioClient {
           'Authorization':
               'Bearer ' + await Provider.of<SpHelper>(context).getToken()
         }));
+  }
+
+  Future<PassengersResponse> getPassengers(int page) async {
+    try {
+      String url =
+          'https://api.instantwebtools.net/v1/passenger?page=$page&size=10';
+
+      Response response = await Dio().get(url);
+      PassengersResponse passengersResponse =
+          PassengersResponse.fromJson(response.data);
+      return passengersResponse;
+    } on Exception catch (e) {
+      log(e.toString());
+      return null;
+    }
   }
 }
